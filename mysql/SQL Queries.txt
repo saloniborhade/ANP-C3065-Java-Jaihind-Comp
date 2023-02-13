@@ -1,0 +1,259 @@
+Enter password: ********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 18
+Server version: 8.0.32 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2023, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show database
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'database' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| anudip             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> use anudip;
+Database changed
+mysql> select * from student;
++----+--------+---------+--------+---------+
+| id | name   | city    | course | seat_No |
++----+--------+---------+--------+---------+
+|  1 | saloni | shiroli | java   |       9 |
+|  2 | sayali | junnar  | java   |      15 |
+|  3 | sejal  | arvi    | java   |      10 |
+|  4 | vicky  | pune    | java   |      33 |
+|  5 | shiv   | Thane   | java   |       3 |
++----+--------+---------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(id),city From student GROUP BY city ORDER BY COUNT(id) DESC;
++-----------+---------+
+| COUNT(id) | city    |
++-----------+---------+
+|         1 | shiroli |
+|         1 | junnar  |
+|         1 | arvi    |
+|         1 | pune    |
+|         1 | Thane   |
++-----------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * from student ORDER BY seat_No ASC;
++----+--------+---------+--------+---------+
+| id | name   | city    | course | seat_No |
++----+--------+---------+--------+---------+
+|  5 | shiv   | Thane   | java   |       3 |
+|  1 | saloni | shiroli | java   |       9 |
+|  3 | sejal  | arvi    | java   |      10 |
+|  2 | sayali | junnar  | java   |      15 |
+|  4 | vicky  | pune    | java   |      33 |
++----+--------+---------+--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT
+    -> seat_No
+    -> FROM
+    -> student
+    -> ORDER BY seat_No;
++---------+
+| seat_No |
++---------+
+|       3 |
+|       9 |
+|      10 |
+|      15 |
+|      33 |
++---------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT name,city
+    -> FROM student
+    -> WHERE id NOT BETWEEN 5 AND 4;
++--------+---------+
+| name   | city    |
++--------+---------+
+| saloni | shiroli |
+| sayali | junnar  |
+| sejal  | arvi    |
+| vicky  | pune    |
+| shiv   | Thane   |
++--------+---------+
+5 rows in set (0.01 sec)
+
+mysql> SELECT name,city
+    ->     -> FROM student
+    ->     -> WHERE id NOT BETWEEN 3 AND 5;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'FROM student
+    -> WHERE id NOT BETWEEN 3 AND 5' at line 2
+mysql> SELECT name FROM student WHERE name LIKE'_e%';
++-------+
+| name  |
++-------+
+| sejal |
++-------+
+1 row in set (0.00 sec)
+
+mysql> SELECT id,SUM(name)
+    -> FROM student
+    -> GROUP BY id;
++----+-----------+
+| id | SUM(name) |
++----+-----------+
+|  1 |         0 |
+|  2 |         0 |
+|  3 |         0 |
+|  4 |         0 |
+|  5 |         0 |
++----+-----------+
+5 rows in set, 5 warnings (0.01 sec)
+
+mysql> create database db;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> use db;
+Database changed
+mysql> create table students(
+    -> s_id int not null,
+    -> s_name varchar(30) not null,
+    -> course_name varchar(30) not null,
+    ->  primary key(s_id))
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> course_name varchar(30) not null,
+ primary key(s_id))' at line 4
+mysql> create table students(
+    -> s_id int not null,
+    -> s_name varchar(30) not null,
+    -> course_name varchar(30) not null,
+    -> primary key(s_id));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table officers(
+    -> of_id int not null,
+    ->         of_name varchar(30) not null,
+    ->         address varchar(30) not null,
+    ->         primary key(of_id));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> insert into students values(1,'sam','java');
+Query OK, 1 row affected (0.02 sec)
+
+mysql>  insert into students values(2,'samy','java');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into students values(3,'krish','ad java');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into officers values(1,'krishna','andheri');
+Query OK, 1 row affected (0.01 sec)
+
+mysql>  insert into officers values(2,'saikrishna','mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> insert into officers values(4,'sai','navi mumbai');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> ^C
+mysql> select * from students;
++------+--------+-------------+
+| s_id | s_name | course_name |
++------+--------+-------------+
+|    1 | sam    | java        |
+|    2 | samy   | java        |
+|    3 | krish  | ad java     |
++------+--------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from officers;
++-------+------------+-------------+
+| of_id | of_name    | address     |
++-------+------------+-------------+
+|     1 | krishna    | andheri     |
+|     2 | saikrishna | mumbai      |
+|     4 | sai        | navi mumbai |
++-------+------------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select officers.of_name,officers.address,students.s_name,students.course_name
+    ->  from officers
+    ->           INNER JOIN students
+    ->         ON officers.of_id=students.s_id;
++------------+---------+--------+-------------+
+| of_name    | address | s_name | course_name |
++------------+---------+--------+-------------+
+| krishna    | andheri | sam    | java        |
+| saikrishna | mumbai  | samy   | java        |
++------------+---------+--------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> select officers.of_name,students.s_name
+    ->
+    ->         from officers
+    ->        LEFT JOIN students
+    ->        ON officers.of_id=students.s_id;
++------------+--------+
+| of_name    | s_name |
++------------+--------+
+| krishna    | sam    |
+| saikrishna | samy   |
+| sai        | NULL   |
++------------+--------+
+3 rows in set (0.01 sec)
+
+mysql> select officers.address,students.course_name
+    ->     from officers
+    ->           RIGHT JOIN students
+    ->         ON officers.of_id=students.s_id;
++---------+-------------+
+| address | course_name |
++---------+-------------+
+| andheri | java        |
+| mumbai  | java        |
+| NULL    | ad java     |
++---------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> select * from officers full join students;
++-------+------------+-------------+------+--------+-------------+
+| of_id | of_name    | address     | s_id | s_name | course_name |
++-------+------------+-------------+------+--------+-------------+
+|     4 | sai        | navi mumbai |    1 | sam    | java        |
+|     2 | saikrishna | mumbai      |    1 | sam    | java        |
+|     1 | krishna    | andheri     |    1 | sam    | java        |
+|     4 | sai        | navi mumbai |    2 | samy   | java        |
+|     2 | saikrishna | mumbai      |    2 | samy   | java        |
+|     1 | krishna    | andheri     |    2 | samy   | java        |
+|     4 | sai        | navi mumbai |    3 | krish  | ad java     |
+|     2 | saikrishna | mumbai      |    3 | krish  | ad java     |
+|     1 | krishna    | andheri     |    3 | krish  | ad java     |
++-------+------------+-------------+------+--------+-------------+
+9 rows in set, 1 warning (0.01 sec)
+
+mysql> select * from officers cross join students;
++-------+------------+-------------+------+--------+-------------+
+| of_id | of_name    | address     | s_id | s_name | course_name |
++-------+------------+-------------+------+--------+-------------+
+|     4 | sai        | navi mumbai |    1 | sam    | java        |
+|     2 | saikrishna | mumbai      |    1 | sam    | java        |
+|     1 | krishna    | andheri     |    1 | sam    | java        |
+|     4 | sai        | navi mumbai |    2 | samy   | java        |
+|     2 | saikrishna | mumbai      |    2 | samy   | java        |
+|     1 | krishna    | andheri     |    2 | samy   | java        |
+|     4 | sai        | navi mumbai |    3 | krish  | ad java     |
+|     2 | saikrishna | mumbai      |    3 | krish  | ad java     |
+|     1 | krishna    | andheri     |    3 | krish  | ad java     |
++-------+------------+-------------+------+--------+-------------+
+9 rows in set (0.00 sec)
+
